@@ -1,14 +1,11 @@
-from assetList import fetchAllAssets
+import assetList
 from asset import Asset
+import pickle
 
 
 def main():
-    message = "Hello jump API"
-    # print(message)
-
-    var = fetchAllAssets()
-    print(var)
+    asset_hash_map = assetList.fetch_and_serialize_all_assets()
+    print(asset_hash_map)
 
 if __name__ == "__main__":
-    # execute only if run as a script
     main()

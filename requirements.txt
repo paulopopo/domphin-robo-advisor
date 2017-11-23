@@ -1,1 +1,3 @@
-Collecting pickle
+requests
+pandas
+numpy
