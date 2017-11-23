@@ -19,7 +19,7 @@ class AssetTest(unittest.TestCase):
             'ratio' : [17,18,20],
             'asset':[61],
             'startDate':'2012-01-01',
-            'endDate':'2013-01-01'
+            'endDate':'2017-06-30'
         }
 
         print(json.dumps(body))

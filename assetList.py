@@ -33,7 +33,7 @@ def fetchAllAssets():
 
 def loadQuotes(id):
     # Asset.loadQuotes(self)
-    url = endPoint + '/asset/{0}/quote?start_date={1}&end_date={2}'.format(id, '2012-01-01', '2012-01-10')
+    url = endPoint + '/asset/{0}/quote?start_date={1}&end_date={2}'.format(id, '2012-01-01', '2017-06-30')
     print(url)
     res = requests.get(url, auth=HTTPBasicAuth(login, password), verify=False)
     data = json.loads(res.content.decode('utf-8'))
