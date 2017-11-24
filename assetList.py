@@ -83,8 +83,8 @@ def load_ratios(asset):
             ratio_map['sharpe']
             ],
         'asset': [asset.id],
-        'startDate': start_date,
-        'endDate': end_date
+        'start_date': start_date,
+        'end_date': end_date
     }
 
     res = requests.post(url, auth=HTTPBasicAuth(login, password), verify=False,
@@ -95,4 +95,5 @@ def load_ratios(asset):
     asset.annual_returns = float(data[str(asset.id)][ratio_map['annual_returns']]['value'].replace(',', '.'))
     asset.returns = float(data[str(asset.id)][ratio_map['returns']]["value"].replace(',', '.'))
     asset.annual_volatility = float(data[str(asset.id)][ratio_map['annual_volatility']]["value"].replace(',', '.'))
+
     return asset

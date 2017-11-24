@@ -26,9 +26,6 @@ def build_hash_map_correlations(asset_hash_map):
     for asset_id1 in asset_hash_map:
         for asset_id2 in asset_hash_map:
 
-            if asset_id1 == asset_id2:
-                continue
-
             count += 1
 
             # Compute correlation between the 2 assets
@@ -38,7 +35,7 @@ def build_hash_map_correlations(asset_hash_map):
             if asset_id1 not in covariances_hash_map:
                 covariances_hash_map[asset_id1] = {}
             covariances_hash_map[asset_id1][asset_id2] = correlation
-            print('Correlation[{}][{}] : {} -- Couple n: {}'.format(asset_id1, asset_id2, correlation, count))
+            #print('Correlation[{}][{}] : {} -- Couple n: {}'.format(asset_id1, asset_id2, correlation, count))
 
     return covariances_hash_map
 
@@ -52,7 +49,7 @@ def calculate_variance(asset_commun_daily_returns):
     return np.var(asset_commun_daily_returns)
 
 
-def get_commun_daily_returns(asset1, asset2):
+def get_common_daily_returns(asset1, asset2):
     """
     Because both assets may not have the same number of quotes, it is necessary to take the common one
 
@@ -95,7 +92,7 @@ def get_commun_daily_returns(asset1, asset2):
 
 
 def calculate_covariance_of_two_objects(asset1, asset2):
-    asset1_common_daily_returns, asset2_common_daily_returns = get_commun_daily_returns(asset1, asset2)
+    asset1_common_daily_returns, asset2_common_daily_returns = get_common_daily_returns(asset1, asset2)
     return calculate_covariance(asset1_common_daily_returns, asset2_common_daily_returns)
 
 
@@ -107,14 +104,13 @@ def calculate_correlation(asset1, asset2):
     :return: float correlation -1 < x < 1
     """
     # Get the common quotes, then get the daily returns of each asset
-    asset1_common_daily_returns, asset2_common_daily_returns = get_commun_daily_returns(asset1, asset2)
+    asset1_common_daily_returns, asset2_common_daily_returns = get_common_daily_returns(asset1, asset2)
 
     # Person correlation formula
-    return calculate_covariance(asset1_common_daily_returns, asset2_common_daily_returns) \
-           / (
-               math.sqrt(calculate_variance(asset1_common_daily_returns))
-              * math.sqrt(calculate_variance(asset2_common_daily_returns))
-             )
+    cov = calculate_covariance(asset1_common_daily_returns, asset2_common_daily_returns)
+    vara = calculate_variance(asset1_common_daily_returns)
+    varb = calculate_variance(asset2_common_daily_returns)
+    return  cov / (np.sqrt(vara) * np.sqrt(varb))
 
 if __name__ == '__main__':
     main()
