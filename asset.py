@@ -1,10 +1,20 @@
+import pandas
+import math
+
+
 class Asset:
     def __init__(self, asset_id, currency, label, raw_json):
         self.id = asset_id
         self.label = label
-        self.mean = 0
         self.currency = currency
-        self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
+        self.hash_map_quotes = 0
+        self.quotes = 0
+        self.returns_list = 0
+
+        if raw_json is not None:
+            self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
+            self.quotes = self.calculate_quotes()
+            self.returns_list = self.calculate_returns()
 
         self.annual_returns = 0
         self.returns = 0
@@ -23,6 +33,19 @@ class Asset:
         for key in sorted_key:
             quotes_value.append(self.hash_map_quotes[key])
         return quotes_value
+
+    def calculate_returns(self):
+        returns = []
+        df = pandas.Series(self.quotes)
+        result = df.pct_change()
+
+        for r in result:
+            x = float(r)
+            if math.isnan(x):
+                continue
+            returns.append(r)
+
+        return returns
 
     @staticmethod
     def build_hash_map_quotes(quotes):

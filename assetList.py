@@ -47,7 +47,8 @@ def fetch_and_serialize_all_assets():
         tmp_asset = load_ratios(asset=tmp_asset)
         print('-')
         assets_map[asset_id] = tmp_asset
-        pickle.dump(assets_map, open(asset_hash_map_path, 'wb'))
+
+    pickle.dump(assets_map, open(asset_hash_map_path, 'wb'))
     return assets_map
 
 
@@ -68,7 +69,7 @@ def load_quotes(asset_id):
 def load_ratios(asset):
     """
     Load volatility, rendement, rendements annualisé, sharp
-    :param asset_id:
+    :param asset:
     :return: The object updated
     """
 
