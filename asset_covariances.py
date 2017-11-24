@@ -94,6 +94,11 @@ def get_commun_daily_returns(asset1, asset2):
     return asset1_commun_daily_returns, asset2_commun_daily_returns
 
 
+def calculate_covariance_of_two_objects(asset1, asset2):
+    asset1_common_daily_returns, asset2_common_daily_returns = get_commun_daily_returns(asset1, asset2)
+    return calculate_covariance(asset1_common_daily_returns, asset2_common_daily_returns)
+
+
 def calculate_correlation(asset1, asset2):
     """
     Compute the correlation between asset1 and asset2
