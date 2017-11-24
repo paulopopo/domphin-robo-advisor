@@ -83,8 +83,8 @@ def load_ratios(asset):
             ratio_map['sharpe']
         ],
         'asset': [asset.id],
-        'startDate': start_date,
-        'endDate': end_date
+        'start_date': start_date,
+        'end_date': end_date
     }
 
     res = requests.post(url, auth=HTTPBasicAuth(login, password), verify=False,

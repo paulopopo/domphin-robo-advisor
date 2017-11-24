@@ -6,7 +6,8 @@ import numpy as np
 
 def main():
     asset_hash_map = assetList.fetch_and_serialize_all_assets()
-    asset_hash_map[315].calculate_monthly_returns()
+    print(asset_hash_map[3].annual_returns)
+
 
     # for id in asset_hash_map:
     #     tmp_asset = asset_hash_map[id]

@@ -9,7 +9,7 @@ import asset_repartition
 def main():
     # Get the 20 assets that will compose our portfolio
     list_assets = asset_selecter.get_list_asset()
-    nb_simulations = 10
+    nb_simulations = 1000
 
     # Construct nb_simulations portfolios
     list_portfolio = create_random_portfolios(list_assets, nb_simulations)

@@ -11,11 +11,11 @@ class Asset:
         self.quotes = 0
         self.daily_returns = 0
         self.monthly_returns = 0
+
         if raw_json is not None:
             self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
             self.quotes = self.calculate_quotes()
             self.daily_returns = self.calculate_daily_returns()
-            self.monthly_returns = self.calculate_monthly_returns()
 
         self.annual_returns = 0
         self.returns = 0
