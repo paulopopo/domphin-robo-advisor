@@ -63,19 +63,8 @@ class Asset:
 
         return quotes_index_by_month
 
-    def calculate_monthly_returns(self):
-        # quotes_index_by_month = self.get_quotes_index_by_month()
-        # for key in quotes_index_by_month:
-        #     df = pandas.Series(quotes_index_by_month[key])
-        #     daily_returns = df.pct_change()
-        #     print(daily_returns)
-        #     monthly_return = self.compute_monthly_returns_from_daily_returns()
-
-        return 0
-
     def compute_monthly_returns_from_daily_returns(self):
         pass
-
 
     @staticmethod
     def build_hash_map_quotes(quotes):
