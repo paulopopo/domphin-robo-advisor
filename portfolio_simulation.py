@@ -4,15 +4,26 @@ import asset_selecter
 import numpy as np
 import portfolio
 import asset_repartition
+import matplotlib.pyplot as plt
 
 
 def main():
     # Get the 20 assets that will compose our portfolio
     list_assets = asset_selecter.get_list_asset()
-    nb_simulations = 1000
+    nb_simulations = 10000
 
     # Construct nb_simulations portfolios
     list_portfolio = create_random_portfolios(list_assets, nb_simulations)
+    x = []
+    y = []
+
+    for portfolio in list_portfolio:
+        x.append(portfolio.volatility)
+        y.append(portfolio.returns)
+
+    plt.plot(x, y, 'ro')
+    plt.axis([0.1, 0.65, 0.33, 0.45])
+    plt.show()
 
 
 def create_random_portfolios(list_assets, nb_simulations):
