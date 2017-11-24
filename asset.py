@@ -9,12 +9,13 @@ class Asset:
         self.currency = currency
         self.hash_map_quotes = 0
         self.quotes = 0
-        self.returns_list = 0
-
+        self.daily_returns = 0
+        self.monthly_returns = 0
         if raw_json is not None:
             self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
             self.quotes = self.calculate_quotes()
-            self.returns_list = self.calculate_returns()
+            self.daily_returns = self.calculate_daily_returns()
+            self.monthly_returns = self.calculate_monthly_returns()
 
         self.annual_returns = 0
         self.returns = 0
@@ -34,7 +35,7 @@ class Asset:
             quotes_value.append(self.hash_map_quotes[key])
         return quotes_value
 
-    def calculate_returns(self):
+    def calculate_daily_returns(self):
         returns = []
         df = pandas.Series(self.quotes)
         result = df.pct_change()
@@ -46,6 +47,35 @@ class Asset:
             returns.append(r)
 
         return returns
+
+    def get_quotes_index_by_month(self):
+        sorted_key = sorted(self.hash_map_quotes)
+        quotes_index_by_month = {}
+        for key in sorted_key:
+            month = key[0:7]
+            if month not in quotes_index_by_month:
+                quotes_index_by_month[month] = []
+
+        for key in sorted_key:
+            month = key[0:7]
+            quote = self.hash_map_quotes[key]
+            quotes_index_by_month[month].append(quote)
+
+        return quotes_index_by_month
+
+    def calculate_monthly_returns(self):
+        # quotes_index_by_month = self.get_quotes_index_by_month()
+        # for key in quotes_index_by_month:
+        #     df = pandas.Series(quotes_index_by_month[key])
+        #     daily_returns = df.pct_change()
+        #     print(daily_returns)
+        #     monthly_return = self.compute_monthly_returns_from_daily_returns()
+
+        return 0
+
+    def compute_monthly_returns_from_daily_returns(self):
+        pass
+
 
     @staticmethod
     def build_hash_map_quotes(quotes):
