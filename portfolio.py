@@ -12,12 +12,12 @@ class Portfolio:
         self.list_asset_repartition = list_asset_repartition
         self.returns = self.calculate_returns()
         self.volatility = self.calculate_volatility()
-        self.risk_free_rate = 0.02
+        self.risk_free_rate = 0.01
         self.sharpe = self.calculate_sharpe()
-        print('returns: {}'.format(self.returns))
-        print('volatility: {}'.format(self.volatility))
-        print('Sharpe: {}'.format(self.sharpe))
-        exit(0)
+
+        # print('returns: {}'.format(self.returns))
+        # print('volatility: {}'.format(self.volatility))
+        #print('Sharpe: {}'.format(self.sharpe))
 
     def calculate_returns(self):
         result = 0
