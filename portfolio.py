@@ -4,11 +4,13 @@ import numpy as np
 import asset_covariances
 import pickle
 
+correlation_map = pickle.load(open('./covariancesHashMap', 'rb'))
+asset_hash_map = pickle.load(open('./assetHashMap.bin', 'rb'))
+
 
 class Portfolio:
 
     def __init__(self, list_asset_repartition):
-        self.correlation_map = pickle.load(open('./covariancesHashMap', 'rb'))
         self.list_asset_repartition = list_asset_repartition
         self.returns = self.calculate_returns()
         self.volatility = self.calculate_volatility()
@@ -22,11 +24,9 @@ class Portfolio:
     def calculate_returns(self):
         result = 0
         for asset_repartition in self.list_asset_repartition:
-            asset = asset_repartition.asset
+            asset = asset_hash_map[asset_repartition.asset_id]
             weight = asset_repartition.weight
             result += asset.annual_returns * weight
-
-
         return result
 
     def calculate_volatility(self):
@@ -37,8 +37,8 @@ class Portfolio:
                 asset_repartition1 = self.list_asset_repartition[i]
                 asset_repartition2 = self.list_asset_repartition[j]
 
-                correlation = self.correlation_map[asset_repartition1.asset.id][asset_repartition2.asset.id]
-                volatility += asset_repartition1.weight * asset_repartition2.weight * correlation * asset_repartition1.asset.annual_volatility * asset_repartition2.asset.annual_volatility
+                correlation = correlation_map[asset_repartition1.asset_id][asset_repartition2.asset_id]
+                volatility += asset_repartition1.weight * asset_repartition2.weight * correlation * asset_hash_map[asset_repartition1.asset_id].annual_volatility * asset_hash_map[asset_repartition2.asset_id].annual_volatility
 
         volatility = np.sqrt(volatility)
         return volatility
