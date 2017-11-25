@@ -36,7 +36,7 @@ class Asset:
         sorted_key = sorted(self.hash_map_quotes)
         for key in sorted_key:
             opening_quotes.append(self.hash_map_quotes[key][0])
-            opening_quotes.append(self.hash_map_quotes[key][1])
+            closing_quotes.append(self.hash_map_quotes[key][1])
         return opening_quotes, closing_quotes
 
     def calculate_daily_returns(self):
