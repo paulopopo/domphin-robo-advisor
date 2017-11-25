@@ -12,7 +12,7 @@ if os.path.exists('./currencies_converter.bin'):
 
 
 def main():
-    currencies = ['EUR', 'USD', 'GBP', 'JPY', 'NOK', 'SEK']
+    currencies = ['EUR', 'USD', 'GBP', 'GBp', 'JPY', 'NOK', 'SEK']
     hash_map_currencies = {}
 
     for c in currencies:

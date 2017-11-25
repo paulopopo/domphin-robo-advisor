@@ -64,6 +64,24 @@ def create_random_portfolios(list_assets, nb_simulations):
     return list_portfolios
 
 
+def create_one_portfolio():
+    """
+    Create a deterministic portfolio
+    :return: a portfolio
+    """
+    list_assets = asset_selecter.get_20_no_random_asset()
+    list_assets_repartition = []
+    weights = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+
+    # Assign each asset with its repartition
+    for j in range(0, len(list_assets)):
+        tmp_asset_repartition = asset_repartition.AssetRepartition(asset_id=list_assets[j].id, weight=weights[j])
+        list_assets_repartition.append(tmp_asset_repartition)
+
+    result = portfolio.Portfolio(list_asset_repartition=list_assets_repartition)
+    return result
+
+
 def generate_random_weights(nb_assets):
     """
     Generate nb_assets random values between [0.01 <= x <= 0.1]
