@@ -9,7 +9,6 @@ def get_list_asset():
     assets = []
 
     while len(assets) < 20:
-
         for asset_id in asset_hash_map:
             if len(assets) < 20 and asset_hash_map[asset_id] not in assets and asset_hash_map[asset_id].annual_returns > 0.30:
                 assets.append(asset_hash_map[asset_id])
