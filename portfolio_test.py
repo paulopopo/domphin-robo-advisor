@@ -35,11 +35,12 @@ class PortfolioTest(unittest.TestCase):
 
     def test_portfolio_sharp(self):
         for p in self.list_portfolio:
+            print("p")
             self.put_portfolio(p)
             self.test_portfolio_sharpe_val_vs_api_share_val(p.sharpe)
 
-    def put_portfolio(self, p):
-
+    @staticmethod
+    def put_portfolio(p):
         # /!\ IT QUANTITY AND NOT WEIGHT
         list_asset_repartition = p.list_asset_repartition
         asset_id_list = []
@@ -47,6 +48,7 @@ class PortfolioTest(unittest.TestCase):
         quantity_list = []
         for elt in list_asset_repartition:
             asset_id_list.append(elt.asset_id)
+
             # /!\ must be some quantity and not weight
             quantity_list.append(elt.weight)
 
@@ -63,9 +65,7 @@ class PortfolioTest(unittest.TestCase):
         }
         # print (json.dumps(body))
         url = endPoint + '/portfolio/{0}/dyn_amount_compo'.format(portfolio_id)
-        requests.put(url, auth=HTTPBasicAuth(login, password), verify=False,
-                     data=json.dumps(body))
-
+        requests.put(url, auth=HTTPBasicAuth(login, password), verify=False, data=json.dumps(body))
 
     def test_portfolio_sharpe_val_vs_api_share_val(self, portfolio_sharpe):
 
@@ -88,6 +88,8 @@ class PortfolioTest(unittest.TestCase):
         data = json.loads(res.content.decode('utf-8'))
         api_sharpe = float(data[portfolio_id][ratio_map['sharpe']]['value'].replace(',', '.'))
 
+        print('asses')
+        print(api_sharpe)
         self.assertAlmostEqual(api_sharpe, portfolio_sharpe, delta=3.3)
 
 

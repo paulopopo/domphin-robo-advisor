@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 def main():
     # Get the 20 assets that will compose our portfolio
     list_assets = asset_selecter.get_list_asset()
-    nb_simulations = 2000
+    nb_simulations = 20000
 
     # Construct nb_simulations portfolios
     list_portfolio = create_random_portfolios(list_assets, nb_simulations)
@@ -23,7 +23,7 @@ def main():
         y.append(portfolio.returns)
 
     plt.plot(x, y, 'ro')
-    plt.axis([0.1, 0.65, 0.33, 0.45])
+    plt.axis([0, 0.65, 0, 0.42])
     plt.show()
 
 
@@ -67,7 +67,8 @@ def generate_random_weights(nb_assets):
     for i in range(0, nb_assets):
         weights.append(uniform(0.01, 0.1))
 
-    weights /= np.sum(weights)
+    #weights /= np.sum(weights)
+    weights = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,]
     return weights
 
 
