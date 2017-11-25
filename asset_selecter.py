@@ -10,8 +10,9 @@ def get_list_asset():
 
     while len(assets) < 20:
         for asset_id in asset_hash_map:
+            print('currency: {}'.format(asset_hash_map[asset_id].currency))
             if len(assets) < 20 and asset_hash_map[asset_id] not in assets and asset_hash_map[asset_id].sharp > 1.2:
                 assets.append(asset_hash_map[asset_id])
-
+                print('nb assets selected: {}'.format(len(assets)))
             elif len(assets) >= 20 :
                 return assets

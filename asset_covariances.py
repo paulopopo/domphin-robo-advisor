@@ -29,13 +29,18 @@ def build_hash_map_correlations(asset_hash_map):
             count += 1
 
             # Compute correlation between the 2 assets
+            if asset_id2 in covariances_hash_map:
+                if asset_id1 in covariances_hash_map[asset_id2]:
+                    covariances_hash_map[asset_id1][asset_id2] = covariances_hash_map[asset_id2][asset_id1]
+                    continue
+
             correlation = calculate_correlation(asset_hash_map[asset_id1], asset_hash_map[asset_id2])
 
             # Index the result
             if asset_id1 not in covariances_hash_map:
                 covariances_hash_map[asset_id1] = {}
             covariances_hash_map[asset_id1][asset_id2] = correlation
-            #print('Correlation[{}][{}] : {} -- Couple n: {}'.format(asset_id1, asset_id2, correlation, count))
+            print('Correlation[{}][{}] : {} -- Couple n: {}'.format(asset_id1, asset_id2, correlation, count))
 
     return covariances_hash_map
 
@@ -76,8 +81,10 @@ def get_common_daily_returns(asset1, asset2):
         keys.append(key)
 
     for key in sorted(keys):
-        quotes_asset_2.append(asset2.hash_map_quotes[key])
-        quotes_asset_1.append(asset1.hash_map_quotes[key])
+        closing_quote_asset_2 = asset2.hash_map_quotes[key][1]
+        closing_quote_asset_1 = asset1.hash_map_quotes[key][1]
+        quotes_asset_2.append(closing_quote_asset_2)
+        quotes_asset_1.append(closing_quote_asset_1)
 
     # Transform the quotes into dataframe
     df1 = pandas.Series(quotes_asset_1)
@@ -110,7 +117,7 @@ def calculate_correlation(asset1, asset2):
     cov = calculate_covariance(asset1_common_daily_returns, asset2_common_daily_returns)
     vara = calculate_variance(asset1_common_daily_returns)
     varb = calculate_variance(asset2_common_daily_returns)
-    return  cov / (np.sqrt(vara) * np.sqrt(varb))
+    return cov / (np.sqrt(vara) * np.sqrt(varb))
 
 if __name__ == '__main__':
     main()

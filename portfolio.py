@@ -14,19 +14,25 @@ class Portfolio:
         self.list_asset_repartition = list_asset_repartition
         self.returns = self.calculate_returns()
         self.volatility = self.calculate_volatility()
-        self.risk_free_rate = 0.01
+        self.risk_free_rate = 0.005
         self.sharpe = self.calculate_sharpe()
-
-        # print('returns: {}'.format(self.returns))
-        # print('volatility: {}'.format(self.volatility))
-        #print('Sharpe: {}'.format(self.sharpe))
 
     def calculate_returns(self):
         result = 0
+        weights = 0
+        returns = 0
+
         for asset_repartition in self.list_asset_repartition:
             asset = asset_hash_map[asset_repartition.asset_id]
             weight = asset_repartition.weight
             result += asset.annual_returns * weight
+            weights += weight
+            returns += asset.annual_returns
+
+        # print('mean asset return: {}'.format(returns / len(self.list_asset_repartition)))
+        # print('weights portfolio: {}'.format(weights))
+        # print('returns portfolio: {}'.format(result))
+
         return result
 
     def calculate_volatility(self):
@@ -44,7 +50,4 @@ class Portfolio:
         return volatility
 
     def calculate_sharpe(self):
-        # print('self.returns :{}'.format(self.returns))
-        # print('self.volatility :{}'.format(self.volatility))
-
         return (self.returns - self.risk_free_rate) / self.volatility

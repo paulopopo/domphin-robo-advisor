@@ -8,13 +8,14 @@ class Asset:
         self.label = label
         self.currency = currency
         self.hash_map_quotes = 0
-        self.quotes = 0
+        self.closing_quotes = 0
+        self.opening_quotes = 0
         self.daily_returns = 0
         self.monthly_returns = 0
 
         if raw_json is not None:
             self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
-            self.quotes = self.calculate_quotes()
+            self.opening_quotes, self.closing_quotes = self.calculate_quotes()
             self.daily_returns = self.calculate_daily_returns()
 
         self.annual_returns = 0
@@ -29,15 +30,18 @@ class Asset:
         return str(self.__dict__)
 
     def calculate_quotes(self):
-        quotes_value = []
+        opening_quotes = []
+        closing_quotes = []
+
         sorted_key = sorted(self.hash_map_quotes)
         for key in sorted_key:
-            quotes_value.append(self.hash_map_quotes[key])
-        return quotes_value
+            opening_quotes.append(self.hash_map_quotes[key][0])
+            opening_quotes.append(self.hash_map_quotes[key][1])
+        return opening_quotes, closing_quotes
 
     def calculate_daily_returns(self):
         returns = []
-        df = pandas.Series(self.quotes)
+        df = pandas.Series(self.closing_quotes)
         result = df.pct_change()
 
         for r in result:
@@ -73,7 +77,8 @@ class Asset:
         for q in quotes:
             date = q['date']
             close = q['close']
-            price_date_map[date] = close
+            opening = q['open']
+            price_date_map[date] = opening, close
 
         return price_date_map
 

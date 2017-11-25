@@ -63,6 +63,7 @@ class PortfolioTest(unittest.TestCase):
                 "2017-01-30": asset_list
             }
         }
+
         # print (json.dumps(body))
         url = endPoint + '/portfolio/{0}/dyn_amount_compo'.format(portfolio_id)
         requests.put(url, auth=HTTPBasicAuth(login, password), verify=False, data=json.dumps(body))
