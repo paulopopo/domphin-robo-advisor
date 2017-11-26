@@ -22,7 +22,7 @@ def fetch_and_serialize_all_assets():
         return pickle.load(open(asset_hash_map_path, 'rb'))
 
     print('Not fetched. API CALL + Serialize.')
-    url = endPoint + '/asset?columns=ASSET_DATABASE_ID&columns=TYPE&columns=CURRENCY&columns=LABEL'
+    url = endPoint + '/asset?columns=ASSET_DATABASE_ID&columns=TYPE&columns=CURRENCY&columns=LABEL&columns=LAST_CLOSE_VALUE_IN_CURR&date=2012-01-01'
     assets_map = {}
 
     res = requests.get(url, auth=HTTPBasicAuth(login, password), verify=False)
@@ -36,13 +36,15 @@ def fetch_and_serialize_all_assets():
 
         print('-')
         print('Fetching elt {}'.format(len(assets_map) + 1))
-
         asset_id = int(elt['ASSET_DATABASE_ID']['value'])
+        print('Asset_id: {}'.format(asset_id))
         currency = elt['CURRENCY']['value']
         label = elt['LABEL']['value']
+        last_closing_value_in_curr = float(elt['LAST_CLOSE_VALUE_IN_CURR']['value'].replace(',', '.').split()[0])
+        print('last_closing_value_in_curr: {}'.format(last_closing_value_in_curr))
 
         print('Loading quotes')
-        tmp_asset = Asset(asset_id, currency, label, load_quotes(asset_id))
+        tmp_asset = Asset(asset_id, currency, label, last_closing_value_in_curr, load_quotes(asset_id))
         print('Loading ratios')
         tmp_asset = load_ratios(asset=tmp_asset)
         print('-')

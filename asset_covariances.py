@@ -29,11 +29,6 @@ def build_hash_map_correlations(asset_hash_map):
             count += 1
 
             # Compute correlation between the 2 assets
-            if asset_id2 in covariances_hash_map:
-                if asset_id1 in covariances_hash_map[asset_id2]:
-                    covariances_hash_map[asset_id1][asset_id2] = covariances_hash_map[asset_id2][asset_id1]
-                    continue
-
             correlation = calculate_correlation(asset_hash_map[asset_id1], asset_hash_map[asset_id2])
 
             # Index the result

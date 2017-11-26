@@ -71,7 +71,9 @@ def create_one_portfolio():
     """
     list_assets = asset_selecter.get_20_no_random_asset()
     list_assets_repartition = []
-    weights = [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+    weights = [0.15, 0.15, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039,
+               0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039, 0.039]
+
 
     # Assign each asset with its repartition
     for j in range(0, len(list_assets)):

@@ -1,9 +1,9 @@
 import pandas
 import math
-
+import converter
 
 class Asset:
-    def __init__(self, asset_id, currency, label, raw_json):
+    def __init__(self, asset_id, currency, label, price_asset_when_creating_portfolio_in_curr, raw_json):
         self.id = asset_id
         self.label = label
         self.currency = currency
@@ -13,10 +13,13 @@ class Asset:
         self.daily_returns = 0
         self.monthly_returns = 0
 
+        self.price_asset_when_creating_portfolio_in_curr = price_asset_when_creating_portfolio_in_curr
+        self.price_asset_when_creating_portfolio_in_euros = \
+            converter.convert_currency_value(price_asset_when_creating_portfolio_in_curr, self.currency, 'EUR')
+
         if raw_json is not None:
             self.hash_map_quotes = self.build_hash_map_quotes(raw_json)
-            self.opening_quotes, self.closing_quotes = self.calculate_quotes()
-            self.daily_returns = self.calculate_daily_returns()
+            self.opening_quotes, self.closing_quotes, self.daily_returns = self.calculate_quotes()
 
         self.annual_returns = 0
         self.returns = 0
@@ -32,25 +35,14 @@ class Asset:
     def calculate_quotes(self):
         opening_quotes = []
         closing_quotes = []
+        daily_returns = []
 
         sorted_key = sorted(self.hash_map_quotes)
         for key in sorted_key:
             opening_quotes.append(self.hash_map_quotes[key][0])
             closing_quotes.append(self.hash_map_quotes[key][1])
-        return opening_quotes, closing_quotes
-
-    def calculate_daily_returns(self):
-        returns = []
-        df = pandas.Series(self.closing_quotes)
-        result = df.pct_change()
-
-        for r in result:
-            x = float(r)
-            if math.isnan(x):
-                continue
-            returns.append(r)
-
-        return returns
+            daily_returns.append(self.hash_map_quotes[key][2])
+        return opening_quotes, closing_quotes, daily_returns
 
     def get_quotes_index_by_month(self):
         sorted_key = sorted(self.hash_map_quotes)
@@ -78,7 +70,8 @@ class Asset:
             date = q['date']
             close = q['close']
             opening = q['open']
-            price_date_map[date] = opening, close
+            daily_return = q['return']
+            price_date_map[date] = opening, close, daily_return
 
         return price_date_map
 
