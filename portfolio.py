@@ -12,36 +12,37 @@ class Portfolio:
 
     def __init__(self, list_asset_repartition):
         self.list_asset_repartition = list_asset_repartition
-        self.returns = self.calculate_returns()
-        self.volatility = self.calculate_volatility()
         self.risk_free_rate = 0.005
-        self.sharpe = self.calculate_sharpe()
-        self.initial_value = self.calculate_initial_portfolio_value()
-        self.final_value = self.calculate_final_portfolio_value()
         self.total_initial_asset_value = self.calculate_total_initial_asset_value()
         self.update_asset_nav()
+        print('value portfolio: {}'.format(self.total_initial_asset_value))
 
-        print('initial quote portfolio: {}'.format(self.initial_value))
-        print('final_value portfolio: {}'.format(self.final_value))
+        self.volatility = self.calculate_volatility()
+        self.returns = self.calculate_returns()
+        self.sharpe = self.calculate_sharpe()
 
     def calculate_returns(self):
         result = 0
-        weights = 0
-        returns = 0
+        print('====')
+        print('=calculate_returns=')
 
         for asset_repartition in self.list_asset_repartition:
+            # print('asset id: {}'.format(asset_repartition.asset_id))
+            # print('quantity: {}'.format(asset_repartition.quantity))
             asset = asset_hash_map[asset_repartition.asset_id]
-            print('currency: {}'.format(asset.currency))
-            print('weight asset: {}'.format(asset_repartition.weight))
 
             weight = asset_repartition.weight
-            result += asset.annual_returns * weight
-            weights += weight
-            returns += asset.annual_returns
 
-        print('mean asset return: {}'.format(returns / len(self.list_asset_repartition)))
-        print('weights portfolio: {}'.format(weights))
-        print('returns portfolio: {}'.format(result))
+            recalculate_nav_asset = (asset.price_asset_when_creating_portfolio_in_euros * asset_repartition.quantity) / self.total_initial_asset_value
+            weight = recalculate_nav_asset
+
+            result += asset.annual_returns * weight
+
+            #print('recalculate_nav_asset: {}'.format(recalculate_nav_asset))
+            # print('asset_repartition.weight: {}'.format(asset_repartition.weight))
+            # print('asset.annual_returns: {}'.format(asset.annual_returns))
+            # print('Multiplication: {}'.format(asset.annual_returns * weight))
+        print('====')
 
         return result
 
@@ -83,10 +84,5 @@ class Portfolio:
         return result
 
     def update_asset_nav(self):
-        print("=================")
-        print('update_asset_nav')
-        print('value portfolio: {}'.format(self.total_initial_asset_value))
         for asset_repartition in self.list_asset_repartition:
-            print('previous weight value: {}'.format(asset_repartition.weight ))
-            asset_repartition.weight = asset_repartition.value / self.total_initial_asset_value
-            print('new weight value: {}'.format(asset_repartition.weight))
+            asset_repartition.weight = round(asset_repartition.value / self.total_initial_asset_value, 5)

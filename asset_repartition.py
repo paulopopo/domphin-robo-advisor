@@ -10,12 +10,10 @@ asset_hash_map = pickle.load(open('./assetHashMap.bin', 'rb'))
 class AssetRepartition:
 
     def __init__(self, asset_id, weight):
-        print('asset ID: {}'.format(asset_id))
         self.asset_id = asset_id
         self.initial_value = self.get_initial_value()
         self.quantity, self.weight = self.adjust_weight(weight)
         self.value = self.calculate_nav()
-        print('self.value: {}'.format(self.value))
 
     def get_initial_value(self):
         return asset_hash_map[self.asset_id].price_asset_when_creating_portfolio_in_euros
@@ -29,9 +27,7 @@ class AssetRepartition:
         :return: adjusted_weight (float)
         """
 
-        print('initial_price_of_stock: {}'.format(self.initial_value))
         quantity_computed = self.compute_quantity_of_bought_stocks(self.initial_value, weight)
-        print('Quantity computed: {}'.format(quantity_computed))
         adjusted_weight = (self.initial_value * quantity_computed) / initial_budget
 
         return quantity_computed, adjusted_weight
@@ -47,10 +43,6 @@ class AssetRepartition:
         :param weight: random_weight assigned
         :return: the number of stocks purchased - int()
         """
-        print('-compute_quantity_of_bought_stocks-')
-        print('weight: {}'.format(weight))
-        print('initial_price_of_stock: {}'.format(initial_price_of_stock))
-
         return int((weight * initial_budget) / (initial_price_of_stock)) - 10
 
     def calculate_nav(self):

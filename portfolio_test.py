@@ -59,7 +59,6 @@ class PortfolioTest(unittest.TestCase):
 
     def test_fix_portfolio(self):
         p = create_one_portfolio()
-        # print('Update it.')
         put_portfolio(p)
 
         url = endPoint + '/ratio/invoke'
